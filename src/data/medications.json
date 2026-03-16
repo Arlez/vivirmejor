@@ -1,0 +1,52 @@
+{
+  "medicamentos": [
+    {
+      "id": "med-1",
+      "nombre": "Salbutamol (inhalador)",
+      "dosis": "2 inhalaciones",
+      "horarios": ["09:00", "21:00"],
+      "instrucciones": "Agitar antes de usar. Inhalar y mantener 10 seg.",
+      "icono": "💨"
+    },
+    {
+      "id": "med-2",
+      "nombre": "Enalapril",
+      "dosis": "10 mg",
+      "horarios": ["09:00"],
+      "instrucciones": "Tomar con agua en ayunas.",
+      "icono": "💊"
+    },
+    {
+      "id": "med-3",
+      "nombre": "Furosemida",
+      "dosis": "40 mg",
+      "horarios": ["09:00"],
+      "instrucciones": "Tomar por la mañana. Vigilar presión arterial.",
+      "icono": "💊"
+    },
+    {
+      "id": "med-4",
+      "nombre": "Aspirina",
+      "dosis": "100 mg",
+      "horarios": ["13:00"],
+      "instrucciones": "Tomar después del almuerzo.",
+      "icono": "💊"
+    },
+    {
+      "id": "med-5",
+      "nombre": "Tiotropio (inhalador)",
+      "dosis": "1 inhalación",
+      "horarios": ["09:00"],
+      "instrucciones": "Inhalador de mantenimiento. Usar cada mañana.",
+      "icono": "💨"
+    },
+    {
+      "id": "med-6",
+      "nombre": "Omeprazol",
+      "dosis": "20 mg",
+      "horarios": ["08:30"],
+      "instrucciones": "Tomar 30 min antes del desayuno.",
+      "icono": "💊"
+    }
+  ]
+}

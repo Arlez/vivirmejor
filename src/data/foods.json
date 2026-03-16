@@ -1,0 +1,66 @@
+{
+  "categorias": [
+    {
+      "nombre": "Verduras",
+      "icono": "🥦",
+      "color": "#22c55e",
+      "alimentos": [
+        { "nombre": "Espinacas", "porcion": "1 taza", "nota": "Rica en hierro y ácido fólico" },
+        { "nombre": "Brócoli", "porcion": "1 taza", "nota": "Antioxidante y antiinflamatorio" },
+        { "nombre": "Zanahoria", "porcion": "1 unidad", "nota": "Fuente de vitamina A" },
+        { "nombre": "Tomate", "porcion": "1 unidad", "nota": "Rico en licopeno" },
+        { "nombre": "Calabacín", "porcion": "1 taza", "nota": "Bajo en calorías, fácil de digerir" },
+        { "nombre": "Acelga", "porcion": "1 taza", "nota": "Rica en magnesio" }
+      ]
+    },
+    {
+      "nombre": "Frutas",
+      "icono": "🍎",
+      "color": "#ef4444",
+      "alimentos": [
+        { "nombre": "Manzana", "porcion": "1 unidad", "nota": "Fibra y antioxidantes" },
+        { "nombre": "Plátano", "porcion": "1 unidad", "nota": "Potasio para el corazón" },
+        { "nombre": "Naranja", "porcion": "1 unidad", "nota": "Vitamina C" },
+        { "nombre": "Pera", "porcion": "1 unidad", "nota": "Fibra suave" },
+        { "nombre": "Arándanos", "porcion": "1/2 taza", "nota": "Antioxidantes potentes" },
+        { "nombre": "Papaya", "porcion": "1 taza", "nota": "Digestiva y antiinflamatoria" }
+      ]
+    },
+    {
+      "nombre": "Proteínas",
+      "icono": "🥩",
+      "color": "#a855f7",
+      "alimentos": [
+        { "nombre": "Pollo (pechuga)", "porcion": "120g", "nota": "Proteína magra" },
+        { "nombre": "Pescado (salmón)", "porcion": "120g", "nota": "Omega 3 para el corazón" },
+        { "nombre": "Huevo", "porcion": "2 unidades", "nota": "Proteína completa" },
+        { "nombre": "Lentejas", "porcion": "1/2 taza", "nota": "Proteína vegetal + hierro" },
+        { "nombre": "Atún", "porcion": "1 lata", "nota": "Omega 3 y proteína" }
+      ]
+    },
+    {
+      "nombre": "Carbohidratos",
+      "icono": "🍞",
+      "color": "#f59e0b",
+      "alimentos": [
+        { "nombre": "Arroz integral", "porcion": "1/2 taza", "nota": "Fibra y energía sostenida" },
+        { "nombre": "Avena", "porcion": "1/2 taza", "nota": "Reduce colesterol" },
+        { "nombre": "Pan integral", "porcion": "1 rebanada", "nota": "Fibra y bajo índice glucémico" },
+        { "nombre": "Batata/Camote", "porcion": "1 unidad", "nota": "Carbohidrato complejo" },
+        { "nombre": "Quinoa", "porcion": "1/2 taza", "nota": "Proteína completa vegetal" }
+      ]
+    },
+    {
+      "nombre": "Grasas saludables",
+      "icono": "🥑",
+      "color": "#06b6d4",
+      "alimentos": [
+        { "nombre": "Aguacate", "porcion": "1/2 unidad", "nota": "Grasas monoinsaturadas" },
+        { "nombre": "Aceite de oliva", "porcion": "1 cucharada", "nota": "Antiinflamatorio natural" },
+        { "nombre": "Nueces", "porcion": "1 puñado", "nota": "Omega 3 vegetal" },
+        { "nombre": "Almendras", "porcion": "1 puñado", "nota": "Vitamina E y magnesio" },
+        { "nombre": "Semillas de chía", "porcion": "1 cucharada", "nota": "Fibra y omega 3" }
+      ]
+    }
+  ]
+}

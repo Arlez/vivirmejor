@@ -1,0 +1,80 @@
+{
+  "ejercicios": [
+    {
+      "id": "respiracion-diafragmatica",
+      "nombre": "Respiración diafragmática",
+      "duracion": "5 minutos",
+      "icono": "🫁",
+      "categoria": "respiración",
+      "instrucciones": [
+        "Siéntese cómodamente o acuéstese boca arriba",
+        "Coloque una mano en el pecho y otra en el abdomen",
+        "Inhale lentamente por la nariz durante 4 segundos",
+        "Sienta cómo el abdomen se eleva (la mano del pecho no debe moverse)",
+        "Exhale lentamente por la boca durante 6 segundos",
+        "Repita 10 veces, descanse 1 minuto, y repita otra serie"
+      ]
+    },
+    {
+      "id": "respiracion-labios-fruncidos",
+      "nombre": "Respiración con labios fruncidos",
+      "duracion": "5 minutos",
+      "icono": "💨",
+      "categoria": "respiración",
+      "instrucciones": [
+        "Siéntese derecho en una silla cómoda",
+        "Inhale por la nariz durante 2 segundos",
+        "Frunza los labios como si fuera a soplar una vela",
+        "Exhale lentamente durante 4-6 segundos",
+        "No fuerce el aire, déjelo salir suavemente",
+        "Repita durante 5 minutos"
+      ]
+    },
+    {
+      "id": "caminata-terapeutica",
+      "nombre": "Caminata terapéutica",
+      "duracion": "15-20 minutos",
+      "icono": "🚶",
+      "categoria": "actividad",
+      "instrucciones": [
+        "Use zapatos cómodos y ropa holgada",
+        "Camine a ritmo suave en un terreno plano",
+        "Mantenga SpO2 por encima de 88% al caminar",
+        "Si usa oxígeno, llévelo consigo",
+        "Descanse si siente falta de aire",
+        "Aumente gradualmente la duración según tolerancia"
+      ]
+    },
+    {
+      "id": "bombeo-pantorrillas",
+      "nombre": "Bombeo de pantorrillas",
+      "duracion": "5 minutos",
+      "icono": "🦵",
+      "categoria": "piernas",
+      "instrucciones": [
+        "Siéntese en una silla con los pies en el suelo",
+        "Levante los talones manteniendo las puntas en el suelo",
+        "Mantenga 3 segundos arriba",
+        "Baje lentamente",
+        "Repita 15 veces",
+        "Descanse 30 segundos y haga otra serie de 15"
+      ]
+    },
+    {
+      "id": "respiracion-relajante",
+      "nombre": "Respiración relajante nocturna",
+      "duracion": "10 minutos",
+      "icono": "🌙",
+      "categoria": "respiración",
+      "instrucciones": [
+        "Acuéstese en la cama boca arriba",
+        "Cierre los ojos y relaje todo el cuerpo",
+        "Inhale por la nariz durante 4 segundos",
+        "Mantenga el aire 4 segundos",
+        "Exhale por la boca durante 6 segundos",
+        "Concéntrese solo en su respiración",
+        "Repita hasta sentir sueño"
+      ]
+    }
+  ]
+}

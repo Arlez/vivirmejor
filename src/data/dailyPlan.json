@@ -1,0 +1,18 @@
+{
+  "actividades": [
+    { "hora": "09:00", "actividad": "Despertar", "instrucciones": "Levántese despacio. Estire los brazos antes de ponerse de pie.", "icono": "☀️" },
+    { "hora": "09:10", "actividad": "Respiración diafragmática", "instrucciones": "5 minutos de respiración controlada sentado en la cama.", "icono": "🫁" },
+    { "hora": "09:30", "actividad": "Desayuno", "instrucciones": "Avena con frutas, o pan integral con huevo. Beber agua.", "icono": "🍳" },
+    { "hora": "10:00", "actividad": "Medicación matutina", "instrucciones": "Tomar medicamentos de la mañana según prescripción.", "icono": "💊" },
+    { "hora": "11:30", "actividad": "Colación de fruta", "instrucciones": "Una fruta fresca: manzana, pera o plátano.", "icono": "🍎" },
+    { "hora": "13:00", "actividad": "Almuerzo", "instrucciones": "Proteína + verduras + carbohidrato integral. Comer despacio.", "icono": "🍽️" },
+    { "hora": "14:00", "actividad": "Descanso", "instrucciones": "Reposo de 30-45 minutos. Puede hacer siesta corta.", "icono": "😴" },
+    { "hora": "15:00", "actividad": "Registro de salud", "instrucciones": "Registrar saturación, presión y cómo se siente.", "icono": "📋" },
+    { "hora": "17:00", "actividad": "Caminata terapéutica", "instrucciones": "15-20 min de caminata suave. Llevar oxígeno si es necesario.", "icono": "🚶" },
+    { "hora": "17:20", "actividad": "Ejercicios de piernas", "instrucciones": "Bombeo de pantorrillas sentado. 2 series de 15.", "icono": "🦵" },
+    { "hora": "18:00", "actividad": "Colación", "instrucciones": "Yogur natural o puñado de nueces.", "icono": "🥜" },
+    { "hora": "20:30", "actividad": "Cena", "instrucciones": "Comida ligera: sopa de verduras o ensalada con proteína.", "icono": "🥗" },
+    { "hora": "21:00", "actividad": "Medicación nocturna", "instrucciones": "Tomar medicamentos de la noche según prescripción.", "icono": "💊" },
+    { "hora": "22:00", "actividad": "Respiración relajante", "instrucciones": "10 minutos de respiración 4-4-6 acostado en la cama.", "icono": "🌙" }
+  ]
+}

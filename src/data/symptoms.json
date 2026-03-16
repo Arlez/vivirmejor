@@ -1,0 +1,16 @@
+{
+  "sintomas": [
+    { "id": "tos", "nombre": "Tos persistente", "icono": "🤧" },
+    { "id": "flema", "nombre": "Flema o esputo", "icono": "💧" },
+    { "id": "falta-aire", "nombre": "Falta de aire", "icono": "😮‍💨" },
+    { "id": "sibilancias", "nombre": "Sibilancias (silbido al respirar)", "icono": "🌬️" },
+    { "id": "fatiga", "nombre": "Fatiga o cansancio", "icono": "😴" },
+    { "id": "edema", "nombre": "Hinchazón en piernas", "icono": "🦶" },
+    { "id": "dolor-pecho", "nombre": "Dolor en el pecho", "icono": "💔" },
+    { "id": "mareo", "nombre": "Mareo o debilidad", "icono": "😵" },
+    { "id": "insomnio", "nombre": "Dificultad para dormir", "icono": "🌙" },
+    { "id": "apetito", "nombre": "Pérdida de apetito", "icono": "🍽️" },
+    { "id": "palpitaciones", "nombre": "Palpitaciones", "icono": "❤️‍🔥" },
+    { "id": "cianosis", "nombre": "Labios o uñas azuladas", "icono": "💙" }
+  ]
+}
