@@ -11,7 +11,7 @@ export default function ServiceWorkerRegistrar() {
     }
 
     // Restore dark mode preference
-    const darkMode = localStorage.getItem('respiravida-darkmode');
+    const darkMode = localStorage.getItem('vivirmejor-darkmode');
     if (darkMode === 'true') {
       document.documentElement.classList.add('dark');
     }

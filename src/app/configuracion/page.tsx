@@ -6,7 +6,7 @@ export default function ConfiguracionPage() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('respiravida-darkmode');
+    const stored = localStorage.getItem('vivirmejor-darkmode');
     if (stored === 'true') {
       setDarkMode(true);
       document.documentElement.classList.add('dark');
@@ -16,7 +16,7 @@ export default function ConfiguracionPage() {
   const toggleDarkMode = () => {
     const next = !darkMode;
     setDarkMode(next);
-    localStorage.setItem('respiravida-darkmode', String(next));
+    localStorage.setItem('vivirmejor-darkmode', String(next));
     if (next) {
       document.documentElement.classList.add('dark');
     } else {
@@ -68,7 +68,7 @@ export default function ConfiguracionPage() {
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md">
         <h2 className="text-lg font-bold text-gray-700 dark:text-gray-200 mb-3">Acerca de</h2>
         <p className="text-base text-gray-500 dark:text-gray-400">
-          <strong>RespiraVida</strong> v1.0
+          <strong>Vivir Mejor</strong> v1.0
         </p>
         <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
           Aplicación de seguimiento de salud para pacientes con enfermedades crónicas respiratorias y cardiovasculares.

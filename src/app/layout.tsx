@@ -3,6 +3,7 @@ import Image from "next/image";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
+import InstallPrompt from "@/components/InstallPrompt";
 
 export const metadata: Metadata = {
   title: "Vivir Mejor - Seguimiento de Salud",
@@ -64,6 +65,7 @@ export default function RootLayout({
         </header>
         <main className="max-w-lg mx-auto px-4 pt-5 pb-24">{children}</main>
         <BottomNav />
+        <InstallPrompt />
         <ServiceWorkerRegistrar />
       </body>
     </html>

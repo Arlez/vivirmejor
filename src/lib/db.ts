@@ -8,13 +8,13 @@ export interface PlanCompletion {
   completada: boolean;
 }
 
-class RespiraVidaDB extends Dexie {
+class VivirMejorDB extends Dexie {
   records!: Table<HealthRecord, number>;
   medicationDoses!: Table<MedicationDose, number>;
   planCompletions!: Table<PlanCompletion, number>;
 
   constructor() {
-    super('RespiraVidaDB');
+    super('VivirMejorDB');
     this.version(1).stores({
       records: '++id, date',
       medicationDoses: '++id, date, medicationId',
@@ -23,4 +23,4 @@ class RespiraVidaDB extends Dexie {
   }
 }
 
-export const db = new RespiraVidaDB();
+export const db = new VivirMejorDB();

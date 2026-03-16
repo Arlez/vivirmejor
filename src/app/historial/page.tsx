@@ -20,13 +20,13 @@ export default function HistorialPage() {
   const handleExportCSV = async () => {
     const all = await getAllRecords();
     const csv = exportToCSV(all);
-    downloadFile(csv, `respiravida-datos-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv');
+    downloadFile(csv, `vivirmejor-datos-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv');
   };
 
   const handleExportJSON = async () => {
     const all = await getAllRecords();
     const json = exportToJSON(all);
-    downloadFile(json, `respiravida-datos-${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
+    downloadFile(json, `vivirmejor-datos-${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
   };
 
   if (editing) {

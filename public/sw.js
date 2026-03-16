@@ -1,4 +1,4 @@
-const CACHE_NAME = 'respiravida-v1';
+const CACHE_NAME = 'vivirmejor-v1';
 const urlsToCache = [
   '/',
   '/dashboard',
