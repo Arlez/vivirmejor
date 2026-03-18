@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import MenuList from '../components/MenuList';
 
 export default function Home() {
-  redirect('/dashboard');
+  return <MenuList showHeader={false} />;
 }

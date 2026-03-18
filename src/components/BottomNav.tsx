@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { href: '/dashboard', label: 'Inicio', icon: '📊' },
+  { href: '/', label: 'Inicio', icon: '📊' },
   { href: '/plan', label: 'Plan', icon: '📅' },
-  { href: '/registro', label: 'Registro', icon: '📋' },
+  { href: '/alimentacion', label: 'Alimentación', icon: '🍽️' },
   { href: '/medicacion', label: 'Meds', icon: '💊' },
-  { href: '/menu', label: 'Más', icon: '☰' },
+  { href: '/menu', label: 'Más', icon: '⚙️' },
 ];
 
 export default function BottomNav() {
@@ -29,7 +29,7 @@ export default function BottomNav() {
                   : 'text-gray-400 dark:text-gray-500'
                 }`}
             >
-              <span className="text-2xl">{item.icon}</span>
+              {item.icon && <span className="text-2xl">{item.icon}</span>}
               <span className={`text-xs font-medium mt-0.5 ${active ? 'font-bold' : ''}`}>
                 {item.label}
               </span>
