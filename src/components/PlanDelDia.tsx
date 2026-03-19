@@ -205,6 +205,15 @@ export default function PlanDelDia() {
     }
   }, [plan]);
 
+  const handleToggleNotif = useCallback(async () => {
+    if (notifPersistenteActiva) {
+      handleDesactivarNotif();
+      cancelarNotificaciones();
+    } else {
+      await handleActivarNotif();
+    }
+  }, [notifPersistenteActiva, handleDesactivarNotif, handleActivarNotif]);
+
   // Alternar tarea
   const handleToggle = useCallback(
     async (idTask: string) => {
@@ -259,33 +268,19 @@ export default function PlanDelDia() {
 
           {/* Botón de notificaciones */}
           <div className="mt-3">
-            <div className="flex items-center gap-3">
-              {notifPersistenteActiva ? (
-                <>
-                  <button
-                    onClick={handleDesactivarNotif}
-                    className="inline-flex items-center gap-1.5 text-xs bg-red-900/50 text-red-300 border border-red-700/50 px-3 py-1.5 rounded-full hover:bg-red-800/60 active:scale-95 transition-all"
-                  >
-                    <Bell className="w-3.5 h-3.5" /> Desactivar alertas
-                  </button>
-                  <span className="inline-flex items-center gap-1.5 text-xs text-green-400 font-medium">
-                    <Bell className="w-3.5 h-3.5" /> Alertas activas
-                  </span>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={handleActivarNotif}
-                    className="inline-flex items-center gap-1.5 text-xs bg-blue-900/50 text-blue-300 border border-blue-700/50 px-3 py-1.5 rounded-full hover:bg-blue-800/60 active:scale-95 transition-all"
-                  >
-                    <Bell className="w-3.5 h-3.5" /> Activar alertas
-                  </button>
-                  <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
-                    <Bell className="w-3.5 h-3.5" /> Alertas desactivadas
-                  </span>
-                </>
-              )}
-            </div>
+            <button
+              onClick={handleToggleNotif}
+              className={`inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border active:scale-95 transition-all ${
+                notifPersistenteActiva
+                  ? 'bg-red-900/50 text-red-300 border-red-700/50'
+                  : 'bg-blue-900/50 text-blue-300 border-blue-700/50'
+              }`}
+            >
+              <Bell className="w-3.5 h-3.5" /> {notifPersistenteActiva ? 'Desactivar alertas' : 'Activar alertas'}
+            </button>
+            <span className="ml-3 inline-flex items-center gap-1.5 text-xs text-gray-300">
+              {notifPersistenteActiva ? 'Alertas activas' : 'Alertas desactivadas'}
+            </span>
           </div>
         </div>
       </div>
