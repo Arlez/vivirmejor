@@ -22,6 +22,21 @@ export interface DailyPlanItem {
   completada?: boolean;
 }
 
+export interface BloqueTask {
+  idTask: string;
+  titulo: string;
+  hora: string;
+  completada: boolean;
+  categoria: 'med' | 'ejercicio' | 'salud';
+  instrucciones?: string;
+}
+
+export interface PlanDiario {
+  id: string; // "YYYY-MM-DD" — clave primaria
+  timestamp: number;
+  bloques: BloqueTask[];
+}
+
 export interface MedicationDose {
   id?: number;
   medicationId: string;
