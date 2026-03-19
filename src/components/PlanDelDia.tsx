@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { db, inicializarPlan, toggleTarea } from '@/lib/db';
 import { todayString } from '@/lib/calculations';
-import { solicitarPermiso, programarNotificaciones } from '@/lib/notificaciones';
+import { solicitarPermiso, programarNotificaciones, cancelarNotificaciones, desactivarNotificaciones, activarNotificaciones, notificacionesActivadasPersistentes } from '@/lib/notificaciones';
 import type { BloqueTask } from '@/types/HealthRecord';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -123,6 +123,7 @@ export default function PlanDelDia() {
   const [iniciado, setIniciado] = useState(false);
   const [toggling, setToggling] = useState<string | null>(null);
   const [notifPermiso, setNotifPermiso] = useState<NotificationPermission>('default');
+  const [notifPersistenteActiva, setNotifPersistenteActiva] = useState(true);
   const prevPct = useRef(0);
 
   // Plan reactivo desde IndexedDB
@@ -141,6 +142,9 @@ export default function PlanDelDia() {
     if (typeof window !== 'undefined' && 'Notification' in window) {
       setNotifPermiso(Notification.permission);
     }
+    try {
+      setNotifPersistenteActiva(notificacionesActivadasPersistentes());
+    } catch {}
   }, []);
 
   // Calcular progreso
@@ -180,6 +184,25 @@ export default function PlanDelDia() {
     const nuevoPermiso = concedido ? 'granted' : 'denied';
     setNotifPermiso(nuevoPermiso as NotificationPermission);
     if (concedido && plan) programarNotificaciones(plan.bloques);
+  }, [plan]);
+
+  const handleDesactivarNotif = useCallback(() => {
+    desactivarNotificaciones();
+    setNotifPersistenteActiva(false);
+    setNotifPermiso('denied');
+  }, []);
+
+  const handleActivarNotif = useCallback(async () => {
+    // Pedir permiso y reactivar
+    const concedido = await solicitarPermiso();
+    if (concedido) {
+      activarNotificaciones();
+      setNotifPersistenteActiva(true);
+      setNotifPermiso('granted');
+      if (plan) programarNotificaciones(plan.bloques);
+    } else {
+      setNotifPermiso('denied');
+    }
   }, [plan]);
 
   // Alternar tarea
@@ -236,22 +259,33 @@ export default function PlanDelDia() {
 
           {/* Botón de notificaciones */}
           <div className="mt-3">
-            {notifPermiso === 'granted' ? (
-              <span className="inline-flex items-center gap-1.5 text-xs text-green-400 font-medium">
-                <Bell className="w-3.5 h-3.5" /> Alertas activas
-              </span>
-            ) : notifPermiso === 'denied' ? (
-              <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
-                <Bell className="w-3.5 h-3.5" /> Notificaciones bloqueadas
-              </span>
-            ) : (
-              <button
-                onClick={handleSolicitarNotif}
-                className="inline-flex items-center gap-1.5 text-xs bg-blue-900/50 text-blue-300 border border-blue-700/50 px-3 py-1.5 rounded-full hover:bg-blue-800/60 active:scale-95 transition-all"
-              >
-                <Bell className="w-3.5 h-3.5" /> Activar alertas de medicación
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {notifPersistenteActiva ? (
+                <>
+                  <button
+                    onClick={handleDesactivarNotif}
+                    className="inline-flex items-center gap-1.5 text-xs bg-red-900/50 text-red-300 border border-red-700/50 px-3 py-1.5 rounded-full hover:bg-red-800/60 active:scale-95 transition-all"
+                  >
+                    <Bell className="w-3.5 h-3.5" /> Desactivar alertas
+                  </button>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-green-400 font-medium">
+                    <Bell className="w-3.5 h-3.5" /> Alertas activas
+                  </span>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={handleActivarNotif}
+                    className="inline-flex items-center gap-1.5 text-xs bg-blue-900/50 text-blue-300 border border-blue-700/50 px-3 py-1.5 rounded-full hover:bg-blue-800/60 active:scale-95 transition-all"
+                  >
+                    <Bell className="w-3.5 h-3.5" /> Activar alertas
+                  </button>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
+                    <Bell className="w-3.5 h-3.5" /> Alertas desactivadas
+                  </span>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

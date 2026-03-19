@@ -41,6 +41,12 @@ export async function solicitarPermiso(): Promise<boolean> {
 export function programarNotificaciones(bloques: BloqueTask[]): void {
   if (typeof window === 'undefined') return;
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  // Si el usuario desactivó explícitamente las notificaciones, no programar nada
+  try {
+    if (localStorage.getItem('vm_notif_disabled') === '1') return;
+  } catch {
+    // Silenciar errores de acceso a localStorage
+  }
 
   // Cancelar timeouts previos
   timeoutsActivos.forEach(t => clearTimeout(t));
@@ -81,6 +87,44 @@ export function programarNotificaciones(bloques: BloqueTask[]): void {
     }, ms);
 
     timeoutsActivos.push(t);
+  }
+}
+
+/** Cancela todos los timeouts programados y notificaciones por SW (si aplica) */
+export function cancelarNotificaciones(): void {
+  timeoutsActivos.forEach(t => clearTimeout(t));
+  timeoutsActivos.length = 0;
+
+  try {
+    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CANCEL_NOTIFICATIONS' });
+    }
+  } catch {
+    // noop
+  }
+}
+
+/** Desactiva notificaciones (persistente) y cancela las ya programadas */
+export function desactivarNotificaciones(): void {
+  try {
+    localStorage.setItem('vm_notif_disabled', '1');
+  } catch {}
+  cancelarNotificaciones();
+}
+
+/** Reactiva notificaciones (remueve el flag persistente) */
+export function activarNotificaciones(): void {
+  try {
+    localStorage.removeItem('vm_notif_disabled');
+  } catch {}
+}
+
+/** Indica si el usuario tiene las notificaciones activadas (persistente flag) */
+export function notificacionesActivadasPersistentes(): boolean {
+  try {
+    return localStorage.getItem('vm_notif_disabled') !== '1';
+  } catch {
+    return true;
   }
 }
 
