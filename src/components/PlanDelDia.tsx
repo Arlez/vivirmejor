@@ -193,26 +193,34 @@ export default function PlanDelDia() {
   }, []);
 
   const handleActivarNotif = useCallback(async () => {
-    // Pedir permiso y reactivar
+    // Reactivar persistentemente la preferencia inmediatamente
+    activarNotificaciones();
+    setNotifPersistenteActiva(true);
+    // Pedir permiso en segundo plano (no bloqueante para la UI)
     const concedido = await solicitarPermiso();
-    if (concedido) {
-      activarNotificaciones();
-      setNotifPersistenteActiva(true);
-      setNotifPermiso('granted');
-      if (plan) programarNotificaciones(plan.bloques);
-    } else {
-      setNotifPermiso('denied');
-    }
+    setNotifPermiso(concedido ? 'granted' : 'denied');
+    if (concedido && plan) programarNotificaciones(plan.bloques);
   }, [plan]);
 
-  const handleToggleNotif = useCallback(async () => {
+  const handleToggleNotif = useCallback(() => {
     if (notifPersistenteActiva) {
-      handleDesactivarNotif();
+      // Desactivar inmediatamente la preferencia y cancelar notifs
+      desactivarNotificaciones();
       cancelarNotificaciones();
+      setNotifPersistenteActiva(false);
+      setNotifPermiso('denied');
     } else {
-      await handleActivarNotif();
+      // Reactiva la preferencia y solicita permiso en background
+      activarNotificaciones();
+      setNotifPersistenteActiva(true);
+      // request permission asynchronously
+      (async () => {
+        const concedido = await solicitarPermiso();
+        setNotifPermiso(concedido ? 'granted' : 'denied');
+        if (concedido && plan) programarNotificaciones(plan.bloques);
+      })();
     }
-  }, [notifPersistenteActiva, handleDesactivarNotif, handleActivarNotif]);
+  }, [notifPersistenteActiva, plan]);
 
   // Alternar tarea
   const handleToggle = useCallback(
@@ -270,17 +278,19 @@ export default function PlanDelDia() {
           <div className="mt-3">
             <button
               onClick={handleToggleNotif}
-              className={`inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border active:scale-95 transition-all ${
+              className={`inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full border active:scale-95 transition-all ${
                 notifPersistenteActiva
-                  ? 'bg-red-900/50 text-red-300 border-red-700/50'
-                  : 'bg-blue-900/50 text-blue-300 border-blue-700/50'
+                  ? 'text-green-400 border-green-400'
+                  : 'text-red-400 border-red-400'
               }`}
+              style={{
+                backgroundColor: notifPersistenteActiva
+                  ? 'rgba(34,197,94,0.18)' // verde-500 con opacidad
+                  : 'rgba(239,68,68,0.18)' // rojo-500 con opacidad
+              }}
             >
-              <Bell className="w-3.5 h-3.5" /> {notifPersistenteActiva ? 'Desactivar alertas' : 'Activar alertas'}
+              <Bell className={`w-4 h-4 ${notifPersistenteActiva ? 'text-green-400' : 'text-red-400'}`} /> {notifPersistenteActiva ? 'Alertas Activadas' : 'Alertas Desactivadas'}
             </button>
-            <span className="ml-3 inline-flex items-center gap-1.5 text-xs text-gray-300">
-              {notifPersistenteActiva ? 'Alertas activas' : 'Alertas desactivadas'}
-            </span>
           </div>
         </div>
       </div>
