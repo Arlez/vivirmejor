@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   Sun, CloudSun, Moon, Pill, Activity, Heart,
-  CheckCircle2, Circle, AlertTriangle, Bell,
+  CheckCircle2, Circle, AlertTriangle, Bell, ChevronDown, ChevronRight,
 } from 'lucide-react';
 import { db, inicializarPlan, toggleTarea } from '@/lib/db';
 import { todayString } from '@/lib/calculations';
@@ -123,6 +123,7 @@ export default function PlanDelDia() {
   const [iniciado, setIniciado] = useState(false);
   const [toggling, setToggling] = useState<string | null>(null);
   const [notifPermiso, setNotifPermiso] = useState<NotificationPermission>('default');
+  // ...existing code...
   const [notifPersistenteActiva, setNotifPersistenteActiva] = useState(true);
   const prevPct = useRef(0);
 
@@ -222,6 +223,33 @@ export default function PlanDelDia() {
     }
   }, [notifPersistenteActiva, plan]);
 
+  // Estado para retraer grupos
+  const [retraidos, setRetraidos] = useState<{ [key: string]: boolean }>({});
+  // Estado para expansiones manuales (evita que el efecto auto-retraiga inmediatamente)
+  const [manualExpanded, setManualExpanded] = useState<{ [key: string]: boolean }>({});
+
+  // Agrupar tareas por período
+  const grupos = (['mañana', 'tarde', 'noche'] as const).map(p => ({
+    periodo: p,
+    tareas: bloques.filter(b => getPeriodo(b.hora) === p),
+  }));
+
+  // Efecto para retraer grupos automáticamente
+  useEffect(() => {
+    grupos.forEach(({ periodo, tareas }) => {
+      const todasCompletadas = tareas.length > 0 && tareas.every(t => t.completada);
+      // Si todas completadas y no fue expandido manualmente, retraer
+      if (todasCompletadas && !manualExpanded[periodo]) {
+        if (!retraidos[periodo]) setRetraidos(prev => ({ ...prev, [periodo]: true }));
+      }
+      // Si ya no están todas completadas, quitar retraído y resetear manualExpanded
+      if (!todasCompletadas) {
+        if (retraidos[periodo]) setRetraidos(prev => ({ ...prev, [periodo]: false }));
+        if (manualExpanded[periodo]) setManualExpanded(prev => ({ ...prev, [periodo]: false }));
+      }
+    });
+  }, [grupos, manualExpanded, retraidos]);
+
   // Alternar tarea
   const handleToggle = useCallback(
     async (idTask: string) => {
@@ -233,11 +261,7 @@ export default function PlanDelDia() {
     [toggling]
   );
 
-  // Agrupar tareas por período
-  const grupos = (['mañana', 'tarde', 'noche'] as const).map(p => ({
-    periodo: p,
-    tareas: bloques.filter(b => getPeriodo(b.hora) === p),
-  }));
+  // ...existing code...
 
   // ── Loading ────────────────────────────────────────────────────────────────
   if (!iniciado || !plan) {
@@ -326,6 +350,18 @@ export default function PlanDelDia() {
       {grupos.map(({ periodo, tareas }) => {
         if (tareas.length === 0) return null;
         const cfg = PERIODOS[periodo];
+        const todasCompletadas = tareas.length > 0 && tareas.every(t => t.completada);
+        const retraido = retraidos[periodo];
+
+        const handleExpandGrupo = () => {
+          setRetraidos(prev => ({ ...prev, [periodo]: false }));
+          setManualExpanded(prev => ({ ...prev, [periodo]: true }));
+        };
+
+        const handleCollapseGrupo = () => {
+          setRetraidos(prev => ({ ...prev, [periodo]: true }));
+          setManualExpanded(prev => ({ ...prev, [periodo]: false }));
+        };
 
         return (
           <section key={periodo} aria-labelledby={`periodo-${periodo}`}>
@@ -338,75 +374,116 @@ export default function PlanDelDia() {
               >
                 {cfg.label}
               </h3>
+              {/* Icono de check si todas completadas */}
+              {todasCompletadas && (
+                <CheckCircle2 className="w-6 h-6 text-green-400 ml-2" />
+              )}
+
+              {/* Icono de flecha que indica estado; clic para alternar */}
+              <button
+                onClick={() => (retraido ? handleExpandGrupo() : handleCollapseGrupo())}
+                className="ml-2 p-1 rounded hover:bg-white/5 active:scale-95 transition"
+                aria-label={`Alternar ${cfg.label}`}
+              >
+                {retraido ? (
+                  <ChevronRight className={`w-4 h-4 ${cfg.color.replace('text-', 'text-')}`} />
+                ) : (
+                  <ChevronDown className={`w-4 h-4 ${cfg.color.replace('text-', 'text-')}`} />
+                )}
+              </button>
+
+              {/* Botón para expandir grupo retraído */}
+              {retraido && (
+                <button
+                  onClick={handleExpandGrupo}
+                  className="ml-3 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#1e2d4a] text-sm font-semibold text-gray-300 bg-transparent hover:bg-[#0f1724] active:scale-95 transition"
+                  aria-label={`Ver tareas de ${cfg.label}`}
+                >
+                  Ver tareas
+                </button>
+              )}
+
+              {/* Mostrar botón 'Ocultar' si el usuario expandió manualmente */}
+              {!retraido && todasCompletadas && manualExpanded[periodo] && (
+                <button
+                  onClick={handleCollapseGrupo}
+                  className="ml-3 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#1e2d4a] text-sm font-semibold text-gray-300 bg-transparent hover:bg-[#0f1724] active:scale-95 transition"
+                  aria-label={`Ocultar tareas de ${cfg.label}`}
+                >
+                  Ocultar
+                </button>
+              )}
             </div>
 
-            {/* Tareas */}
-            <div className="space-y-2.5">
-              {tareas.map(tarea => {
-                const esCaminata = tarea.idTask === 'caminata';
-                const bloqueada = esCaminata && spo2Bajo;
-                const enProgreso = toggling === tarea.idTask;
+            {/* Tareas, solo si no retraído */}
+            {!retraido && (
+              <div className="space-y-2.5">
+                {tareas.map(tarea => {
+                  const esCaminata = tarea.idTask === 'caminata';
+                  const bloqueada = esCaminata && spo2Bajo;
+                  const enProgreso = toggling === tarea.idTask;
 
-                return (
-                  <button
-                    key={tarea.idTask}
-                    onClick={() => !bloqueada && handleToggle(tarea.idTask)}
-                    disabled={bloqueada || enProgreso}
-                    style={{ minHeight: '64px' }}
-                    className={[
-                      'w-full flex items-center gap-4 px-4 rounded-2xl text-left',
-                      'transition-all duration-200 active:scale-[0.97] border',
-                      tarea.completada
-                        ? 'bg-green-950/50 border-green-800/50'
-                        : bloqueada
-                        ? 'pointer-events-none opacity-40 bg-gray-900/30 border-gray-800/30'
-                        : 'bg-[#151f30] border-[#1e2d4a] hover:border-blue-700/60 hover:bg-[#192438]',
-                      enProgreso ? 'opacity-60' : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
-                    aria-pressed={tarea.completada}
-                    aria-label={`${tarea.titulo}${tarea.completada ? ' – completada' : ''}`}
-                  >
-                    {/* Checkbox visual */}
-                    <span className="shrink-0">
-                      {tarea.completada ? (
-                        <CheckCircle2 className="w-7 h-7 text-green-400" />
-                      ) : (
-                        <Circle className="w-7 h-7 text-gray-600" />
-                      )}
-                    </span>
+                  return (
+                    <button
+                      key={tarea.idTask}
+                      onClick={() => !bloqueada && handleToggle(tarea.idTask)}
+                      disabled={bloqueada || enProgreso}
+                      style={{ minHeight: '64px' }}
+                      className={[
+                        'w-full flex items-center gap-4 px-4 rounded-2xl text-left',
+                        'transition-all duration-200 active:scale-[0.97] border',
+                        tarea.completada
+                          ? 'bg-green-950/50 border-green-800/50'
+                          : bloqueada
+                          ? 'pointer-events-none opacity-40 bg-gray-900/30 border-gray-800/30'
+                          : 'bg-[#151f30] border-[#1e2d4a] hover:border-blue-700/60 hover:bg-[#192438]',
+                        enProgreso ? 'opacity-60' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                      aria-pressed={tarea.completada}
+                      aria-label={`${tarea.titulo}${tarea.completada ? ' – completada' : ''}`}
+                    >
+                      {/* Checkbox visual */}
+                      <span className="shrink-0">
+                        {tarea.completada ? (
+                          <CheckCircle2 className="w-7 h-7 text-green-400" />
+                        ) : (
+                          <Circle className="w-7 h-7 text-gray-600" />
+                        )}
+                      </span>
 
-                    {/* Contenido */}
-                    <div className="flex-1 min-w-0 py-3">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-semibold text-blue-400 tabular-nums">
-                          {tarea.hora}
-                        </span>
-                        <CategoriaIcon cat={tarea.categoria} />
-                        <span
-                          className={`text-base font-semibold leading-tight ${
-                            tarea.completada
-                              ? 'text-green-400 line-through decoration-green-700'
-                              : 'text-gray-100'
-                          }`}
-                        >
-                          {tarea.titulo}
-                        </span>
-                        {bloqueada && (
-                          <span className="text-xs text-red-400 font-medium">(SpO₂ baja)</span>
+                      {/* Contenido */}
+                      <div className="flex-1 min-w-0 py-3">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs font-semibold text-blue-400 tabular-nums">
+                            {tarea.hora}
+                          </span>
+                          <CategoriaIcon cat={tarea.categoria} />
+                          <span
+                            className={`text-base font-semibold leading-tight ${
+                              tarea.completada
+                                ? 'text-green-400 line-through decoration-green-700'
+                                : 'text-gray-100'
+                            }`}
+                          >
+                            {tarea.titulo}
+                          </span>
+                          {bloqueada && (
+                            <span className="text-xs text-red-400 font-medium">(SpO₂ baja)</span>
+                          )}
+                        </div>
+                        {tarea.instrucciones && (
+                          <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                            {tarea.instrucciones}
+                          </p>
                         )}
                       </div>
-                      {tarea.instrucciones && (
-                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                          {tarea.instrucciones}
-                        </p>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </section>
         );
       })}
